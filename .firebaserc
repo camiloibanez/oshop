@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "oshop-c3ab0"
+  },
+  "targets": {
+    "oshop-c3ab0": {
+      "hosting": {
+        "oshop": [
+          "oshop-c3ab0"
+        ]
+      }
+    }
+  }
+}
