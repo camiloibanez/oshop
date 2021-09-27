@@ -1,1 +1,66 @@
-<p>admin-products works!</p>
+
+<p>
+    <a routerLink="/admin/products/new" class="btn btn-primary">New Product</a>
+</p>
+
+<!-- Bootstrap Table with filtering, but no sorting or pagination -->
+<!-- <p>
+    <input
+        #query
+        (keyup)="filter(query.value)" 
+        type="text" class="form-control" placeholder="Search...">
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let p of filteredProducts">
+            <td>{{ p.payload.child('title').val() }}</td>
+            <td>{{ p.payload.child('price').val() | currency:'USD':'symbol' }}</td>
+            <td>
+                <a [routerLink]="['/admin/products/', p.payload.key ]">Edit</a>
+            </td>
+        </tr>
+    </tbody>
+</table> -->
+
+<!-- Angular Material Table with filtering, sorting, and pagination -->
+<mat-form-field appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)">
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+            <td mat-cell *matCellDef="let p2"> {{ p2.title }}</td>
+        </ng-container>
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+            <td mat-cell *matCellDef="let p2"> {{ p2.price | currency:'USD':'symbol' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Edit">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let p2">
+                <a [routerLink]="['/admin/products/', p2.key ]">Edit</a>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let p2; columns: displayedColumns"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="3">No products match the filter.</td>
+        </tr>
+
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons aria-label="Select page of products"></mat-paginator>
+</div>

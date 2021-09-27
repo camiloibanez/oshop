@@ -22,6 +22,17 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { UserService } from './services/user.service';
 import { AdminAuthGuard } from './services/admin-auth-guard.service';
+import { ProductFormComponent } from './admin/product-form/product-form.component';
+import { CategoryService } from './services/category.service';
+import { FormsModule } from '@angular/forms';
+import { ProductService } from './services/product.service';
+import { CustomFormsModule } from 'ng2-validation';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -35,21 +46,32 @@ import { AdminAuthGuard } from './services/admin-auth-guard.service';
     MyOrdersComponent,
     AdminProductsComponent,
     AdminOrdersComponent,
-    LoginComponent
+    LoginComponent,
+    ProductFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
+    FormsModule,
+    CustomFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    NoopAnimationsModule
   ],
   providers: [
     AuthService,
     AuthGuard,
     AdminAuthGuard,
-    UserService
+    UserService,
+    CategoryService,
+    ProductService
   ],
   bootstrap: [AppComponent]
 })
