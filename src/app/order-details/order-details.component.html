@@ -1,0 +1,46 @@
+<h1>Order Summary</h1>
+
+<ng-container *ngIf="order">
+    <p>
+        {{ order.shipping.name }} ordered {{ order.totalItems }} items on {{ order.datePlaced | date }}.
+        <button
+            (click)="cancelOrder()"
+            class="btn btn-outline-danger btn-sm">
+            Cancel Order
+        </button>
+    </p>    
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of order.items">
+                <td>
+                    <div [style.backgroundImage]="'url(' + item.product.imageUrl + ')'" class="thumbnail"></div>
+                </td>
+                <td>
+                    {{ item.product.title }}
+                </td>
+                <td>
+                    {{ item.quantity }} x {{ item.product.price | currency:'USD':'symbol' }}
+                </td>
+                <td>
+                    {{ item.totalPrice | currency:'USD':'symbol'}}
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="font-weight-bold">Total</td>
+                <td class="font-weight-bold">{{ order.totalPrice | currency:'USD':'symbol' }}</td>
+            </tr>
+        </tfoot>
+    </table>
+</ng-container>

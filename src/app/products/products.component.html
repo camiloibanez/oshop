@@ -1,17 +1,32 @@
 
+<input
+    #query
+    (keyup)="titleFilter(query.value)" 
+    type="text" id="catalog-filter" class="form-control" placeholder="Search...">
+
 <div class="row">
     <div class="col-3">
        <product-filter [category]="category"></product-filter>
     </div>
     <div class="col">
-        <div class="row">
-            <ng-container *ngFor="let p of filteredProducts; let i = index">
+        <div class="row" *ngIf="cart$ | async as cart">
+            <ng-container *ngFor="let p of filteredProducts 
+                | slice:((paginator.pageIndex)*paginator.pageSize):
+                ((paginator.pageIndex+1)*paginator.pageSize); let i = index">
                 <div class="col">
-                   <product-card [product]="p"></product-card>
+                   <product-card [product]="p" [shopping-cart]="cart" class="catalog-card"></product-card>
                 </div>
                 <div *ngIf="(i+1) % 2 === 0" class="w-100"></div>    
             </ng-container>
         </div>
+        <mat-paginator 
+            #paginator
+            [length]="filteredProducts.length"
+            [pageSizeOptions]="[6, 8, 10, 12]"
+            (page)="pageEvent = $event"
+            showFirstLastButtons
+            aria-label="Select page of products">
+        </mat-paginator>
     </div>
 </div>
 

@@ -1,1 +1,35 @@
-<p>my-orders works!</p>
+<h1>My Orders</h1>
+
+<mat-form-field appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)">
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="totalPrice">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+            <td mat-cell *matCellDef="let order"> {{ order.totalPrice | currency:'USD':'symbol' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="datePlaced">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+            <td mat-cell *matCellDef="let order"> {{ order.datePlaced | date:'medium' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="View">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let order">
+                <a [routerLink]="['/my/orders/', order.key ]">View</a>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let order; columns: displayedColumns"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="3">No orders match the filter.</td>
+        </tr>
+
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons aria-label="Select page of orders"></mat-paginator>
+</div>
