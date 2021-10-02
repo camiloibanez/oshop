@@ -3,37 +3,17 @@
     <a routerLink="/admin/products/new" class="btn btn-primary">New Product</a>
 </p>
 
-<!-- Bootstrap Table with filtering, but no sorting or pagination -->
-<!-- <p>
-    <input
-        #query
-        (keyup)="filter(query.value)" 
-        type="text" class="form-control" placeholder="Search...">
-</p>
+<mat-form-field appearance="standard">
+    <mat-label>Category</mat-label>
+    <mat-select [(ngModel)]="categoryFilter" (selectionChange)="applyFilter()">
+      <mat-option value="">All Categories</mat-option>
+      <mat-option *ngFor="let c of categories$ | async" [value]="c.key">{{ c.payload.child('name').val() }}</mat-option>
+    </mat-select>
+</mat-form-field>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>price</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let p of filteredProducts">
-            <td>{{ p.payload.child('title').val() }}</td>
-            <td>{{ p.payload.child('price').val() | currency:'USD':'symbol' }}</td>
-            <td>
-                <a [routerLink]="['/admin/products/', p.payload.key ]">Edit</a>
-            </td>
-        </tr>
-    </tbody>
-</table> -->
-
-<!-- Angular Material Table with filtering, sorting, and pagination -->
 <mat-form-field appearance="standard">
     <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)">
+    <input matInput [(ngModel)]="titleFilter" (keyup)="applyFilter()">
 </mat-form-field>
 
 <div class="mat-elevation-z8">

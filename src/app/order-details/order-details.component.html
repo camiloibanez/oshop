@@ -4,6 +4,7 @@
     <p>
         {{ order.shipping.name }} ordered {{ order.totalItems }} items on {{ order.datePlaced | date }}.
         <button
+            [disabled]="!refundable"
             (click)="cancelOrder()"
             class="btn btn-outline-danger btn-sm">
             Cancel Order

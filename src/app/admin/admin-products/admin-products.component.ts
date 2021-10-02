@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { ProductWithKey } from 'src/app/models/product';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-admin-products',
@@ -12,19 +13,25 @@ import { ProductWithKey } from 'src/app/models/product';
   styleUrls: ['./admin-products.component.css']
 })
 export class AdminProductsComponent implements OnDestroy {
-  // products: any[] = [];
-  // filteredProducts: any[] = [];
   subscription: Subscription;
   displayedColumns = ['title', 'price', 'Edit'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  categories$: any;
+  categoryFilter: string = '';
+  titleFilter: string = '';
+  filterValues = {
+    title: '',
+    category: ''
+  };
 
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
   @ViewChild(MatSort) sort: MatSort | any;
 
-  constructor(private productService: ProductService) { 
+  constructor(private productService: ProductService, private categoryService: CategoryService) { 
+    this.categories$ = this.categoryService.getAll();
+
     this.subscription = this.productService.getAll().snapshotChanges()
       .subscribe(products => {
-        // this.filteredProducts = this.products = products;
         let productsList: ProductWithKey[] = [];
 
         products.forEach(product => {
@@ -44,24 +51,23 @@ export class AdminProductsComponent implements OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  // filter(query: string) {
-  //   this.filteredProducts = (query) ?
-  //     this.products.filter(p => p.payload.child('title').val().toLowerCase().includes(query.toLowerCase())) :
-  //     this.products;
-  // }
+  applyFilter() {
+    this.filterValues['title'] = this.titleFilter.trim().toLowerCase();
+    this.filterValues['category'] = this.categoryFilter.trim().toLowerCase();
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filter = JSON.stringify(this.filterValues);
 
     if(this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
 
-  private createFilter(): (product: ProductWithKey, filterValue: string) => boolean {
-    let filterFunction = function (product: ProductWithKey, filterValue: string): boolean {
-      return product.title.toLowerCase().indexOf(filterValue) !== -1 || product.price.toFixed(2).toString().indexOf(filterValue) !== -1;
+  private createFilter(): (product: ProductWithKey, filterValues: string) => boolean {
+    let filterFunction = function (product: ProductWithKey, filterValues: string): boolean {
+      let searchString = JSON.parse(filterValues);
+      return (product.title.toLowerCase().indexOf(searchString['title']) !== -1 || 
+        product.price.toFixed(2).toString().indexOf(searchString['title']) !== -1) &&
+        product.category.toLowerCase().indexOf(searchString['category']) !== -1;
     }
 
     return filterFunction;

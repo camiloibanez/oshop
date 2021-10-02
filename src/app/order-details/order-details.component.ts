@@ -11,6 +11,7 @@ import { OrderService } from '../services/order.service';
 export class OrderDetailsComponent implements OnInit {
   id: string;
   order: any;
+  refundable: boolean = false;
 
   constructor(
     private route: ActivatedRoute, 
@@ -18,7 +19,14 @@ export class OrderDetailsComponent implements OnInit {
     private orderService: OrderService) { 
 
     this.id = this.route.snapshot.paramMap.get('id') || '';
-    if (this.id) this.orderService.getOrder(this.id).valueChanges().pipe(take(1)).subscribe(order => this.order = order);
+    let now = new Date().getTime();
+    if (this.id) this.orderService.getOrder(this.id).valueChanges().pipe(take(1))
+      .subscribe(order => {
+        this.order = order;
+        this.refundable = now < (this.order.datePlaced + 172800000); // Less than 2 days since purchase
+      });
+    
+    
   }
 
   ngOnInit() {

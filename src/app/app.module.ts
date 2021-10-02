@@ -41,6 +41,7 @@ import { OrderService } from './services/order.service';
 import { ShoppingCartSummaryComponent } from './shopping-cart-summary/shopping-cart-summary.component';
 import { ShippingFormComponent } from './shipping-form/shipping-form.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
     MatSortModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
