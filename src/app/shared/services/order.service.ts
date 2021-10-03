@@ -30,5 +30,4 @@ export class OrderService {
   cancelOrder(orderId: string) {
     return this.db.object('/orders/' + orderId).remove();
   }
-
 }

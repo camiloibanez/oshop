@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { OrderService } from 'shared/services/order.service';
@@ -8,7 +8,7 @@ import { OrderService } from 'shared/services/order.service';
   templateUrl: './order-details.component.html',
   styleUrls: ['./order-details.component.css']
 })
-export class OrderDetailsComponent implements OnInit {
+export class OrderDetailsComponent {
   id: string;
   order: any;
   refundable: boolean = false;
@@ -25,23 +25,20 @@ export class OrderDetailsComponent implements OnInit {
         this.order = order;
         this.refundable = now < (this.order.datePlaced + 172800000); // Less than 2 days since purchase
       });
-    
-    
-  }
-
-  ngOnInit() {
   }
 
   cancelOrder() {
     this.orderService.cancelOrder(this.id);
     alert('Order Canceled');
     this.route.url.subscribe(url => {
-      url.pop();
-      let returnUrl = url.map(s => s.path);
-      this.router.navigate([...returnUrl]);
+      if (url[0].path === 'order-success') {
+        this.router.navigate(['/']);
+      } else {
+        url.pop();
+        let returnUrl = url.map(s => s.path);
+        console.log(returnUrl);
+        this.router.navigate([...returnUrl]);  
+      }
     });
-    
   }
-
-
 }

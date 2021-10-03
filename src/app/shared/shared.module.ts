@@ -58,6 +58,7 @@ import { UserService } from './services/user.service';
     CommonModule,
     ProductCardComponent,
     ProductQuantityComponent,
+    OrderDetailsComponent,
     FormsModule,
     MatTableModule,
     MatPaginatorModule,
